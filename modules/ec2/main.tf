@@ -81,7 +81,7 @@ resource "aws_security_group" "Instance-sg" {
   }
 }
 
-/*resource "aws_lb_target_group_attachment" "A" {
+resource "aws_lb_target_group_attachment" "A" {
   target_group_arn = var.target_group_a_arn
   target_id        = aws_instance.instance_A.id
   port             = 80
@@ -97,4 +97,4 @@ resource "aws_lb_target_group_attachment" "C" {
   target_group_arn = var.target_group_c_arn
   target_id        = aws_instance.instance_C.id
   port             = 80
-}*/
+}

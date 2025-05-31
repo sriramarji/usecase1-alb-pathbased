@@ -6,17 +6,6 @@ resource "aws_lb" "application" {
   subnets            = values(var.subnet_ids)
 }
 
-resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.application.arn
-  port              = "80"
-  protocol            = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.a.arn
-  }
-}
-
 resource "aws_lb_target_group" "a" {
   name     = "tg-a"
   port     = 80
@@ -56,6 +45,17 @@ resource "aws_lb_target_group" "c" {
     port = 80
     protocol = "HTTP"
     matcher = "200"
+  }
+}
+
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.application.arn
+  port              = "80"
+  protocol            = "HTTP"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.a.arn
   }
 }
 

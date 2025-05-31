@@ -1,7 +1,7 @@
 variable "ami_id" {
   description = "AMI ID for the EC2 instances"
   type = string
-  default = "ami-0f9de6e2d2f067fca"
+  default = "ami-084568db4383264d4"
 }
 
 variable "instance_type" {
@@ -25,7 +25,7 @@ variable "vpc_id" {
   type = string
 }
 
-/*variable "target_group_a_arn" {
+variable "target_group_a_arn" {
   description = "Target group ARN for instance A."
   type = string
 }
@@ -38,4 +38,4 @@ variable "target_group_b_arn" {
 variable "target_group_c_arn" {
   description = "Target group ARN for instance C."
   type = string
-}*/
+}
