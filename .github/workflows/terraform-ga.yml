@@ -37,9 +37,9 @@ jobs:
         run: terraform plan
         working-directory: ./
         
-      #- name: Infra provision with terraform apply
-      #  run: terraform apply -auto-approve
-      # working-directory: ./
+      - name: Infra provision with terraform apply
+        run: terraform apply -auto-approve
+        working-directory: ./
         
       - name: Destroying infra
         run: terraform destroy -auto-approve
