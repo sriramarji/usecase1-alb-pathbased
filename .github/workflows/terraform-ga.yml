@@ -1,9 +1,11 @@
 name: alb-pathbased
 
+#on:
+#  push:
+#    branches:
+#      - master
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   terraform:
