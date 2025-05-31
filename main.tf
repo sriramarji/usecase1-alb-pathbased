@@ -17,7 +17,7 @@ module "ec2" {
   subnet_ids = module.vpc.subnet_ids
   key_name = "Hcl-prac-training"
   vpc_id = module.vpc.vpc_id
-  #target_group_a_arn = module.alb.target_group_a_arn
-  #target_group_b_arn = module.alb.target_group_b_arn
-  #target_group_c_arn = module.alb.target_group_c_arn
+  target_group_a_arn = module.alb.target_group_a_arn
+  target_group_b_arn = module.alb.target_group_b_arn
+  target_group_c_arn = module.alb.target_group_c_arn
 }
