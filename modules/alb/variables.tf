@@ -4,6 +4,6 @@ variable "subnet_ids" {
 }
 
 variable "vpc_id" {
-  description = "VPC ID."
+  description = "VPC ID"
   type = string
 }

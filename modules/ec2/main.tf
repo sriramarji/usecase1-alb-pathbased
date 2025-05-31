@@ -8,7 +8,7 @@ resource "aws_instance" "instance_A" {
         #!/bin/bash
         sudo apt update -y
         sudo apt install nginx -y
-        echo "<h1>Welcome to Homapage - Instance A</h1>" | sudo tee /var/www/html/index.html
+        echo "<h1>Welcome to Homepage - Instance A</h1>" | sudo tee /var/www/html/index.html
         sudo systemctl start nginx
         EOF
   tags = {
@@ -28,7 +28,7 @@ resource "aws_instance" "instance_B" {
         sudo apt install nginx -y
         sudo rm -rf /var/www/html/index.nginx-debian.html
         sudo mkdir /var/www/html/images
-        echo "<h1>Images Page - Instance B</h1>" | sudo tee /var/www/html/images/index.html
+        echo "<h1>Welcome to Images Page - Instance B</h1>" | sudo tee /var/www/html/images/index.html
         sudo systemctl restart nginx
         EOF
   tags = {
@@ -48,7 +48,7 @@ resource "aws_instance" "instance_C" {
         sudo apt install nginx -y
         sudo rm -rf /var/www/html/index.nginx-debian.html
         sudo mkdir /var/www/html/register
-        echo "<h1>Register Page - Instance C</h1>" | sudo tee /var/www/html/register/index.html
+        echo "<h1>You are at Register Page - Instance C</h1>" | sudo tee /var/www/html/register/index.html
         sudo systemctl restart nginx
         EOF
   tags = {

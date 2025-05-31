@@ -4,7 +4,3 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
-
-aws
-awscliv2.zip
-
