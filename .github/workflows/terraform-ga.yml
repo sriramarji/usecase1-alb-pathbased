@@ -36,3 +36,11 @@ jobs:
       - name: Checking terraform plan for dry-run
         run: terraform plan
         working-directory: ./
+        
+      - name: Infra provision with terraform apply
+        run: terraform apply -auto-approve
+        working-directory: ./
+        
+      - name: Destroying infra
+        run: terraform destroy -auto-approve
+        working-directory: ./
