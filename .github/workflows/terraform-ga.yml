@@ -1,35 +1,30 @@
 name: alb-pathbased
 
-#on:
-#  push:
-#    branches:
-#      - master
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
-permissions:
-  id-token: write
-  contents: read
-  
 jobs:
-  terraform:
-    name: Terraform Operations
+  terraform_apply: # This job will provision your infrastructure
+    name: Terraform Apply Operations
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::211125784755:role/uc1-alb-oidc
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.3
         with:
           terraform_version: ">= 1.12.0"
-            
+
       - name: Initialize Terraform
         run: terraform init
         working-directory: ./
@@ -41,11 +36,51 @@ jobs:
       - name: Checking terraform plan for dry-run
         run: terraform plan
         working-directory: ./
-        
+
       - name: Infra provision with terraform apply
         run: terraform apply -auto-approve
         working-directory: ./
-        
-      - name: Destroying infra
+
+  manual_test_and_approval: # This job will pause and wait for your approval
+    name: Manual Test and Approval
+    runs-on: ubuntu-latest
+    needs: terraform_apply # This means this job only starts after 'terraform_apply' finishes successfully
+    environment:
+      name: Review_Before_Destroy # **IMPORTANT**: We'll configure this environment in GitHub in Step 2.
+    steps:
+      - name: Awaiting manual approval for destroy
+        run: |
+          echo "==========================================================="
+          echo "Infrastructure deployed. Please perform your tests now."
+          echo "Once testing is complete, go to the 'Summary' page of this workflow run in GitHub."
+          echo "Look for the 'manual_test_and_approval' job and click 'Review deployments' to approve."
+          echo "The workflow will pause here until you approve."
+          echo "==========================================================="
+
+  terraform_destroy: # This job will destroy your infrastructure after approval
+    name: Terraform Destroy Operations
+    runs-on: ubuntu-latest
+    needs: manual_test_and_approval # This means this job only starts AFTER 'manual_test_and_approval' is manually approved
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.3
+        with:
+          terraform_version: ">= 1.12.0"
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ./
+
+      - name: Infra destroy with terraform destroy
         run: terraform destroy -auto-approve
         working-directory: ./
